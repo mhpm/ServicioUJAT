@@ -12,7 +12,6 @@ Vue.component('app-modal', {
                     </div>
                 </section>
             </div>
-            <button v-on:click="CloseModal" class="modal-close is-large" aria-label="close"></button>
         </div>`
     ,
     data:function(){
@@ -43,13 +42,6 @@ Vue.component('app-modal', {
             setTimeout(function(){
                 vm.modalActive = '';
             }, time);
-        },
-        CloseModal: function(){
-            this.modalActive = '';
-            this.status = 'Enviando Reporte...';
-            this.msg = 'Espere por favor';
-            this.modalColor = 'is-warning';
-            if(this.sent){ location.reload(); }
         }
     }
 })

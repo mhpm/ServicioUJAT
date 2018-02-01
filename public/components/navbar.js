@@ -42,7 +42,7 @@ Vue.component('app-navbar', {
             if (user) {
                 //console.log(user.email);
             } else {
-                window.location.replace("index.html");
+                //window.location.replace("index.html");
             }
         });
 

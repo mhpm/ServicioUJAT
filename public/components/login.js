@@ -1,4 +1,4 @@
-Vue.component('app-login', {
+const Login = Vue.component('app-login', {
     template:
         ` <section class="section is-vertical-center">
             <div class="container">
@@ -65,8 +65,7 @@ Vue.component('app-login', {
         var vm = this;
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
-                    window.location.replace("dashboard.html");
-                    User = user;                  
+                    app.$router.push({name: 'dashboard'});               
                 }
             });
     },
@@ -74,7 +73,7 @@ Vue.component('app-login', {
         Login: function(email, password) {
         var vm = this;
         firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
-                window.location.replace("dashboard.html");
+            app.$router.push({name: 'dashboard'});
             })
             .catch(function(error) {
                 if (error.code == "auth/weak-password") {

@@ -5,24 +5,28 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Login</title>
-      <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+      <script src="https://unpkg.com/vue/dist/vue.js"></script>
+      <script src="components/login.js"></script>
+      <script src="components/modal.js"></script>
+      <script src="components/dashboard.js"></script>
+      <script src="components/navbar.js"></script>
+      <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
       <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/journal/bulmaswatch.min.css">
       <link rel="stylesheet" href="css/login.css">
   </head>
   <body>
-      <div id="root">
-          <app-login></app-login>
+      <div id="app">
+            <app-navbar v-if="$route.path != '/'"></app-navbar>
+            <router-view></router-view>
       </div>
 
       <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
-      <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
-      <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase-auth.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
       <script src="js/firebase.js"></script>
-      <script src="components/login.js"></script>
-      <script>
-          new Vue ({
-              el:'#root'
-          })
-      </script>
+      <script src="js/router.js"></script>
   </body>
 </html>
