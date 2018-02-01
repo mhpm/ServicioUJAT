@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Dashboard</title>
+      <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+      <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/journal/bulmaswatch.min.css">
+      <style>
+      </style>
+  </head>
+  <body>
+        <div id="root">
+            <app-navbar></app-navbar>
+            <div class="hero-body">
+                <div class="container">
+                    <div>
+                        <div class="notification is-primary">
+                            <h1 class="title is-h1 has-text-centered">SERVICIO SOCIAL</h1>
+                        </div>
+                        <form v-on:submit.prevent="SaveData">
+                            <div class="columns">
+                                    <div class="column">
+                                            <h1 class="subtitle is-4">Horas por Cumplir: {{HorasT}}</h1>
+                                            <h2 class="subtitle is-4">Horas Pendientes: {{HorasP}} </h2>
+                                            <h3 class="subtitle is-4">Horas Actuales: {{HorasA}}</h3>
+                                    </div>
+                                </div>
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="field">
+                                        <label class="label">Agregar horas:</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input is-medium" v-model="horas" type="number" min="1" step="1" oninvalid="this.setCustomValidity('Campos Obligatorios')"
+                                                oninput="setCustomValidity('')" placeholder="0" required>
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-clock"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="field is-grouped is-grouped-centered">
+                                        <div class="control">
+                                            <input class="button is-primary is-medium" type="submit" value="Agregar">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <app-modal ref="modal"></app-modal>
+                </div>
+            </div>
+        </div>
+
+        <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+        <script src="js/firebase.js"></script>
+
+        <script src="components/navbar.js"></script>
+        <script src="components/modal.js"></script>
+
+       <script>
+        new Vue ({
+            el:'#root',
+            data:{
+                horas:'',
+                HorasT:'',
+                HorasP:'',
+                HorasA:''
+            },
+            created(){
+                var vm = this;
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        vm.email = user.email;
+                    }
+                });
+                vm.db = firebase.firestore();
+            },
+            mounted(){
+                var vm = this;
+                vm.Modal = vm.$refs.modal;
+                vm.Modal.Loading(4000)
+                setTimeout(function(){
+                    vm.LoadData()        
+                }, 2000);
+            },
+            methods: {
+                SendEmail() {
+                },
+                SaveData(){
+                    var vm = this
+                    vm.Modal.Loading(2000)
+                    vm.dataHoras.HorasActuales = +vm.dataHoras.HorasActuales + +vm.horas;
+                    vm.dataHoras.HorasPendientes = +vm.dataHoras.HorasTotal - +vm.dataHoras.HorasActuales;
+                    this.userRef.set(vm.dataHoras).then(function () {
+                        console.log('status saved');
+                        vm.Clean()
+                        vm.LoadData()
+                    }).catch(function (erro) {
+                        console.log('Got Erro');
+                        console.log(erro);
+                    });
+                },
+                LoadData() {
+                    var vm = this
+                    vm.userRef = vm.db.collection("Users").doc(vm.email);
+                    vm.userRef.get().then(function(doc){
+                        if(doc.exists){
+                            vm.dataHoras = doc.data();
+                            setTimeout(function(){
+                                vm.HorasA = vm.dataHoras.HorasActuales;
+                                vm.HorasP = vm.dataHoras.HorasPendientes;
+                                vm.HorasT = vm.dataHoras.HorasTotal;
+                            }, 1000);
+                        }else{
+                            console.log('Document not Exists');
+                        }
+                    });
+                },
+                Clean() {
+                    this.horas = '';
+                }
+            }
+        })
+    </script>
+  </body>
+</html>
