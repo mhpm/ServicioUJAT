@@ -42,7 +42,7 @@ Vue.component('app-navbar', {
             if (user) {
                 //console.log(user.email);
             } else {
-                //window.location.replace("index.html");
+                app.$router.push({name: 'login'});
             }
         });
 
@@ -73,7 +73,7 @@ Vue.component('app-navbar', {
     methods: {
         LogOut: function() {
             firebase.auth().signOut().then(function() {
-                    window.location.replace("index.html");
+                    app.$router.push({name: 'login'});
                 },
                 function(error) {}
             );
