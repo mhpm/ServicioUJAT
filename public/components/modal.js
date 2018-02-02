@@ -6,8 +6,9 @@ Vue.component('app-modal', {
                 <section v-bind:class="['hero is-medium', modalColor]">
                     <div class="hero-body">
                         <div class="container" id="StatusBoard">
-                            <h1 class="title is-1">{{status}}</h1>
-                            <h4 class="subtitle is-4">{{msg}}</h4>
+                            <div class="lds-dual-ring"></div>
+                            <h1 class="title is-2">{{status}}</h1>
+                            <h4 class="subtitle is-5">{{msg}}</h4>
                         </div>
                     </div>
                 </section>
@@ -17,7 +18,7 @@ Vue.component('app-modal', {
     data:function(){
         return {
             modalActive: '',
-            modalColor: 'is-warning',
+            modalColor: 'is-primary',
             status: 'Cargando Datos',
             msg: 'Espere por favor',
             sent: false
