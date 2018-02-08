@@ -36,10 +36,12 @@ const Login = Vue.component('app-login', {
                             </div>
                             <div class="field">
                                 <p class="control">
-                                    <div class="notification is-warning has-text-centered has-text-grey-dark" v-if="errorMessage != ''">
-                                        <h5 class="subtitle is-5">{{errorMessage}}</h5>
+                                <transition name="fade">
+                                    <div class="notification is-warning has-text-centered" v-if="errorMessage != '' && email != ''">
+                                        <h5 class="title is-6">{{errorMessage}}</h5>
                                     </div>
                                 </p>
+                                </transition>
                             </div>
                             <div class="field is-grouped is-grouped-centered">
                                 <p class="control">
